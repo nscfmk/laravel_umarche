@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
+use App\Models\Owner;
 
 class OwnerSeeder extends Seeder
 {
@@ -72,4 +73,5 @@ class OwnerSeeder extends Seeder
 
         ]);
     }
+
 }
