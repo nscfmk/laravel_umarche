@@ -21,6 +21,10 @@
                     <x-nav-link :href="route('owner.shops.index')" :active="request()->routeIs('owner.shops.index')">
                         店舗情報
                     </x-nav-link>
+
+                    <x-nav-link :href="route('owner.images.index')" :active="request()->routeIs('owner.images.index')">
+                        画像管理
+                    </x-nav-link>
                 </div>
             </div>
             <!-- Settings Dropdown -->
@@ -78,6 +82,10 @@
 
             <x-responsive-nav-link :href="route('owner.shops.index')" :active="request()->routeIs('owner.shops.index')">
                 店舗情報
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('owner.images.index')" :active="request()->routeIs('owner.images.index')">
+                画像管理
             </x-responsive-nav-link>
         </div>
 
