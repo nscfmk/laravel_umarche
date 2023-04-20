@@ -9,26 +9,26 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <x-flash-message  />
+                    <x-flash-message />
                     <div class="flex justify-end mb-4">
-                        <button onclick="location.href='{{ route('owner.images.create')}}'" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">新規登録する</button>
+                        <button onclick="location.href='{{ route('owner.images.create') }}'"
+                            class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">新規登録する</button>
                     </div>
-                    @foreach ($images as $image)
-                        <div class="w-1/4 p-4">
-                        <a href="{{ route('owner.images.edit', ['image' => $image->id]) }}">
-                            <div calss="border rounded-md p-4">
-                                <div class="text-xl">{{ $image->title }}</div>
-                                <div>
-                                    <x-thumbnail type="products" :filename="$shop->filename" />
-                                </div>
+                    <div class="flex flex-wrap">
+                        @foreach ($images as $image)
+                            <div class="w-1/4 p-2 md:p-4">
+                                <a href="{{ route('owner.images.edit', ['image' => $image->id]) }}">
+                                    <div class="border rounded-md p-2 md:p-4">
+                                        <x-thumbnail type="products" :filename="$image->filename" />
+                                            <div class="text-gray-700">{{ $image->title }}</div>
+                                    </div>
+                                </a>
                             </div>
+                        @endforeach
+                    </div>
+                    {{ $images->links() }}
                 </div>
-                </a>
             </div>
-            @endforeach
-            {{ $images->links() }}
         </div>
-    </div>
-    </div>
     </div>
 </x-app-layout>
