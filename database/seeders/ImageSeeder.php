@@ -15,8 +15,7 @@ class ImageSeeder extends Seeder
      */
     public function run()
     {
-    }
-}
+
 DB::table('images')->insert([
     [
         'owner_id' => '1',
@@ -46,3 +45,5 @@ DB::table('images')->insert([
 
 
 ]);
+    }
+}

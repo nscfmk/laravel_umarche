@@ -10,6 +10,7 @@ use App\Http\Controllers\Owner\Auth\NewPasswordController;
 use App\Http\Controllers\Owner\Auth\PasswordController;
 use App\Http\Controllers\Owner\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Owner\Auth\RegisteredUserController;
+use App\Http\Controllers\Owner\ProductController;
 use App\Http\Controllers\Owner\ShopController;
 use App\Http\Controllers\Owner\ImageController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
@@ -40,6 +41,9 @@ Route::prefix('shops')-> middleware('auth:owners')->group(function(){
 
 
 Route::resource('images', ImageController::class)
+->middleware('auth:owners')->except(['show']);
+
+Route::resource('products', ProductController::class)
 ->middleware('auth:owners')->except(['show']);
 
 Route::get('/dashboard', function () {
