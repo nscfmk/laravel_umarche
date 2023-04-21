@@ -11,7 +11,7 @@ class Shop extends Model
 
 
     protected $fillable = [
-        'owner_id',
+        'owner_/id',
         'name',
         'information',
         'filename',
