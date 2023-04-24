@@ -55,7 +55,7 @@ class ProductController extends Controller
     public function create()
     {
         $shops = Shop::where('owner_id', Auth::id())
-        ->select('id', 'name')
+        ->select('id', 'name')    
         ->get();
 
         $images = Image::where('owner_id', Auth::id())

@@ -11,6 +11,9 @@
     if ($name === 'image4') {
         $modal = 'modal-4';
     }
+    if ($name === 'image5') {
+        $modal = 'modal-5';
+    }
 @endphp
 
 <div class="modal micromodal-slide" id="{{ $modal }}" aria-hidden="true">
@@ -46,7 +49,7 @@
 
 
 <div class="flex justify-around items-center mb-4">
-    <a data-micromodal-trigger="{{ $modal }}" href='javascript:;'>ファイルを選択</a>
+    <a class="py-2 px-4 bg-gray-200" data-micromodal-trigger="{{ $modal }}" href='javascript:;'>ファイルを選択</a>
     <div class="w-1/4">
         <img id="{{ $name }}_thumbnail" src="">
     </div>
