@@ -8,12 +8,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                    <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                    <x-input-error :messages="$errors->all()" class="mt-2" />
+                    <x-flash-message status="session('status')" />
                     <form method="post" action="{{ route('owner.products.update', ['product' => $product->id]) }}">
                         @csrf
+                        @method('put')
                         <div class="-m-2">
                             <div class="p-2 w-1/2 mx-auto">
                                 <div class="relative">
@@ -53,29 +52,28 @@
 
                             <div class="p-2 w-1/2 mx-auto">
                                 <div class="relative">
-                                    <label for="current_quantity" class="leading-7 text-sm text-gray-600">初期在庫
-                                        ※必須</label>
+                                    <label for="current_quantity" class="leading-7 text-sm text-gray-600">現在の在庫</label>
                                     <input type="hidden" id="current_quantity" name="current_quantity"
                                         value="{{ $quantity }}" required>
 
-
-                                    <div class="p-2 w-1/2 mx-auto">
-                                        <div class="relative flex justify-around">
-                                            <div><input type="radio" name="type" class="mr-2" value="1"
-                                                    checked>追加</div>
-                                            <div><input type="radio" name="type" class="mr-2"
-                                                    value="2">削減</div>
-                                        </div>
+                                        
                                     </div>
-
-                                </div>
-                                <div class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300">
-                                    {{ $quantity }}</div>
-                            </div>
+                                    <div class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300">
+                                        {{ $quantity }}</div>
+                                    </div>
+                                    
+                                                                        <div class="p-2 w-1/2 mx-auto">
+                                                                            <div class="relative flex justify-around">
+                                                                                <div><input type="radio" name="type" class="mr-2" value="{{ \Co}}"
+                                                                                        checked>追加</div>
+                                                                                <div><input type="radio" name="type" class="mr-2"
+                                                                                        value="2">削減</div>
+                                                                            </div>
+                                                                        </div>
 
                             <div class="p-2 w-1/2 mx-auto">
                                 <div class="relative">
-                                    <label for="quantity" class="leading-7 text-sm text-gray-600">初期在庫 ※必須</label>
+                                    <label for="quantity" class="leading-7 text-sm text-gray-600">数量 ※必須</label>
                                     <input type="number" id="quantity" name="quantity" value=0
                                         required
                                         class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
