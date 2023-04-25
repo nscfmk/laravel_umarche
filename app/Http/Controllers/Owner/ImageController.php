@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Owner;
 
 
 use App\Models\Image;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -145,7 +146,41 @@ class ImageController extends Controller
     public function destroy($id)
     {
        $image = Image::findOrFail($id);
+       
+       $imageInProducts = Product::where('image1', $image->id)
+       ->orWhere('image2', $image->id)
+       ->orWhere('image3', $image->id)
+       ->orWhere('image4', $image->id)
+       ->get();
+
+       if($imageInProducts){
+        $imageInProducts->each(function($product) use($image){
+            if($product->image1 === $image->id){
+                $product->image1 = null;
+                $product->save();
+            }
+
+            if($product->image2 === $image->id){
+                $product->image2 = null;
+                $product->save();
+            }
+
+            if($product->image3 === $image->id){
+                $product->image3 = null;
+                $product->save();
+            }
+
+            if($product->image4 === $image->id){
+                $product->image4 = null;
+                $product->save();
+            }
+        });
+       }
+       
+       
        $filePath = 'public/products/' . $image->filename;
+
+       
 
        //物理ファイルを最初に削除する。 
        if(Storage::exists($filePath)){
@@ -154,7 +189,6 @@ class ImageController extends Controller
         
         //その次にDBの情報も削除していく。
         Image::findOrFail($id)->delete();
-
 
         return redirect()->route('owner.images.index')
             ->with([
