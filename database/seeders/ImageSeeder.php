@@ -44,6 +44,23 @@ DB::table('images')->insert([
     ],
 
 
+    [
+        'owner_id' => '1',
+        'filename' => 'sample5.jpg',
+        'title' => null,
+    ],
+
+
+
+    [
+        'owner_id' => '1',
+        'filename' => 'sample5.jpg',
+        'title' => null,
+    ],
+
+
+
+
 ]);
     }
 }

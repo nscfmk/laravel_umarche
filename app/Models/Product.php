@@ -57,11 +57,7 @@ class Product extends Model
     {
         return $this->belongsTo(Image::class, 'image4', 'id');
     }
-    
-    
 
-
-    
 
     public function stock()
     {
