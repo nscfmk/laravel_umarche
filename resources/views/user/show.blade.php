@@ -11,7 +11,60 @@
                 <div class="p-6 text-gray-900">
                     <div class="md:flex md:justity-around">
                         <div class="md:w-1/2">
-                            <x-thumbnail type="products" filename="{{ $product->imageFirst->filename ?? '' }}" />
+                            <div class="swiper">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper">
+                                  <!-- Slides -->
+                                  <div class="swiper-slide">
+
+                                    @if ($product->imageFirst->filename !== null)
+                                        <img src="{{ asset('storage/products/' . $product->imageFirst->filename )}}">
+                                    @else
+                                        <img src="">
+                                    @endif
+
+                                  </div>
+
+                                  <div class="swiper-slide">
+
+                                    @if ($product->imageSecond->filename !== null)
+                                        <img src="{{ asset('storage/products/' . $product->imageSecond->filename )}}">
+                                    @else
+                                        <img src="">
+                                    @endif
+
+                                  </div>
+
+                                  <div class="swiper-slide">
+
+                                    @if ($product->imageThird->filename !== null)
+                                        <img src="{{ asset('storage/products/' . $product->imageThird->filename )}}">
+                                    @else
+                                        <img src="">
+                                    @endif
+
+                                  </div>
+
+                                  <div class="swiper-slide">
+
+                                    @if ($product->imageFourth->filename !== null)
+                                        <img src="{{ asset('storage/products/' . $product->imageFourth->filename )}}">
+                                    @else
+                                        <img src="">
+                                    @endif
+
+                                  </div>
+                                 
+                                </div>
+                                <!-- If we need pagination -->                                
+                                <!-- If we need navigation buttons -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+
+                                <!-- If we need scrollbar -->
+                                <div class="swiper-scrollbar"></div>
+                                <div class="swiper-pagination"></div>
+                            </div>
                         </div>
                         <div class="md:w-1/2 ml-4">
                             <h2 class="mb-4 text-sm title-font text-gray-500 tracking-widest">{{ $product->category->name }}
