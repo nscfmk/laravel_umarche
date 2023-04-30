@@ -108,7 +108,7 @@
                             </form>
 
                             </div>
-                        </div>
+                        </div>  
                     </div>
 
                     <div class="border-t border-gray-400 my-8"></div>
