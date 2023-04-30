@@ -23,12 +23,12 @@ class CartController extends Controller
 
       return view('user.cart', compact('products','totalPrice'));
     }
-   
+
     public function add(Request $request) 
     {
       $itemInCart = Cart::where('product_id', $request->product_id)
       ->where('user_id', Auth::id())->first();
-      
+
       if($itemInCart){
        $itemInCart->quantity += $request->quantity;
        $itemInCart->save();
