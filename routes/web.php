@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ComponentTestController;
 use App\Http\Controllers\LifeCycleTestController;
 use App\Http\Controllers\User\ItemController;
+use App\Http\Controllers\User\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,6 @@ Route::get('/component-test2', [ComponentTestController::class, 'showComponent2'
 Route::get('/servicecontainertest', [LifeCycleTestController::class, 'showServiceContainerTest']);
 Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showServiceProviderTest']);
 
-
 // Route::get('/', function () {
 //     return view('user.welcome');
 // });
@@ -36,10 +36,15 @@ Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showService
 //     return view('user.dashboard');
 // })->middleware(['auth:users', 'verified'])->name('dashboard');
 
-Route::middleware('auth:users')->group(function () {
+Route::prefix(('cart'))->middleware('auth:users')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::prefix('cart')-> middleware('auth:users')->group(function(){
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('add', [CartController::class, 'add'])->name('cart.add');
+    });
 
 require __DIR__.'/auth.php';
