@@ -1,9 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\User;
 
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Stock;
+use Stripe\Stripe;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,7 @@ class CartController extends Controller
         ]);
       }
 
-      return redirect()->route('user.cart');
+      return redirect()->route('user.cart.index');
     }
 
   public function delete($id){
@@ -60,6 +61,8 @@ class CartController extends Controller
         $quantity = '';
         $quantity = Stock::where('product_id', $product->id)->sum('quantity');
 
+
+
         if ($product->pivot->quantity > $quantity) {
             return redirect()->route('user.cart.index');
         } else {
@@ -74,6 +77,7 @@ class CartController extends Controller
         }
     }
 
+    //stripeにsessionを受け渡す前に
     foreach ($products as $product) {
         Stock::create([
             'product_id' => $product->id,
@@ -82,7 +86,8 @@ class CartController extends Controller
         ]);
     }
 
-    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+    dd('在庫削減テスト');
+    Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
     $session = \Stripe\Checkout\Session::create([
         'payment_method_types' => ['card'],
@@ -91,11 +96,12 @@ class CartController extends Controller
         'success_url' => route('user.items.index'),
         'cancel_url' => route('user.cart.index'),
     ]);
- 
+
     $publicKey = env('STRIPE_PUBLIC_KEY');
 
     return view(
         'user.checkout',
         compact('session', 'publicKey')
     );
+ }
 }

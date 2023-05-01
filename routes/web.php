@@ -36,7 +36,7 @@ Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showService
 //     return view('user.dashboard');
 // })->middleware(['auth:users', 'verified'])->name('dashboard');
 
-Route::prefix(('cart'))->middleware('auth:users')->group(function () {
+Route::prefix(('user'))->middleware('auth:users')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
