@@ -67,13 +67,17 @@ class CartController extends Controller
             return redirect()->route('user.cart.index');
         } else {
             $lineItem = [
-                'name' => $product->name,
-                'description' => $product->information,
-                'amount' => $product->price,
+               'price_data' => [
                 'currency' => 'jpy',
+                'unit_amount' => $product->price,
+                'product_data' => [
+                    'name' => $product->name,
+                    'description' => $product->information,
+                ],
+             ],
                 'quantity' => $product->pivot->quantity,
             ];
-            array_push($lineItems, $lineItem);
+                array_push($lineItems, $lineItem);
         }
     }
 
@@ -86,7 +90,6 @@ class CartController extends Controller
         ]);
     }
 
-    dd('在庫削減テスト');
     Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
     $session = \Stripe\Checkout\Session::create([
