@@ -15,12 +15,26 @@ class ItemController extends Controller
     {
         $this->middleware('auth:users');
 
-        
+        $this->middleware(function ($request, $next) {
+
+            $id = $request->route()->parameter('item');
+            if (!is_null($id)) {
+                $itemId = Product::availableItems()->where('products.id', $id)->exists();   //在庫が存在する商品で絞り込み→選択された商品で絞り込み→存在するor存在しないの判定
+                if (!$itemId) {
+                    abort(404);
+                }
+            }
+            return $next($request);
+        });
+
     }
    
-    public function index()
+    public function index(Request  $request)
     {
-        $products = Product::availableItems()->get();
+        $products = Product::availableItems()
+        ->sortOrder($request->sort)->get();
+
+
 
         return view('user.index', compact('products'));
     }
