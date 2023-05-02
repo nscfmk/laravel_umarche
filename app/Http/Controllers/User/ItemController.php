@@ -32,7 +32,8 @@ class ItemController extends Controller
     public function index(Request  $request)
     {
         $products = Product::availableItems()
-        ->sortOrder($request->sort)->get();
+        ->sortOrder($request->sort)
+        ->paginate($request->pagination);
 
 
 

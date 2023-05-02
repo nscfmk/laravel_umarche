@@ -37,8 +37,16 @@
                         </option>
                     </select>
                 </div>
-                <div>表示件数</div>
-             </div>
+
+                
+                <div>
+                    <span class="text-sm">表示件数</span><br>
+                    <select name="pagination" id="pagination">
+                        <option value="20" @if(\Request::get('pagination') === '20') selected @endif>20件</option>
+                        <option value="50" @if(\Request::get('pagination') === '50') selected @endif>50件</option>
+                        <option value="100" @if(\Request::get('pagination') === '100') selected @endif>100件</option>
+                    </select>
+                </div>
             </form>
         </div>
     </div>
@@ -65,6 +73,10 @@
                                 </div>
                             @endforeach
                     </div>
+                    {{ $products->appends([
+                        'sort' => \Request::get('sort'),
+                        'pagination' => \Request::get('pagination'),
+                    ])->links() }}
                 </div>
             </div>
         </div>
@@ -72,6 +84,11 @@
  <script>
     const select = document.getElementById('sort')
     select.addEventListener('change' , function(){
+        this.form.submit()
+    })
+
+    const paginate = document.getElementById('pagination')
+    paginate.addEventListener('paginaiton' , function(){
         this.form.submit()
     })
  </script>
