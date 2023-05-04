@@ -102,34 +102,44 @@ class Product extends Model
 
     public function scopeSortOrder($query, $sortOrder)
     {
-        if($sortOrder === null || \Constant::SORT_ORDER['recommend']){
-            return $query->orderBy('sort_order','asc');
+        if ($sortOrder === null || \Constant::SORT_ORDER['recommend']) {
+            return $query->orderBy('sort_order', 'asc');
         }
 
-        if($sortOrder === \Constant::SORT_ORDER['higherPrice']){
+        if ($sortOrder === \Constant::SORT_ORDER['higherPrice']) {
             return $query->orderBy('price', 'desc');
         }
 
-        if($sortOrder === \Constant::SORT_ORDER['lowerPrice']){
+        if ($sortOrder === \Constant::SORT_ORDER['lowerPrice']) {
             return $query->orderBy('price', 'asc');
         }
 
-        if($sortOrder === \Constant::SORT_ORDER['later']){
+        if ($sortOrder === \Constant::SORT_ORDER['later']) {
             return $query->orderBy('products.created_at', 'desc');
         }
-        if($sortOrder === \Constant::SORT_ORDER['older']){
+        if ($sortOrder === \Constant::SORT_ORDER['older']) {
             return $query->orderBy('', 'desc');
         }
     }
-        public function scopeSelectCategory($query, $categoryId)
+    public function scopeSelectCategory($query, $categoryId)
     {
-        if($categoryId !== '0')
-        {
+        if ($categoryId !== '0') {
             return $query->where('secondary_category_id', $categoryId);
-        }else{
-             return;
-             }
-
+        } else {
+            return;
+        }
     }
 
+    public function scopeSearchKeyword($query, $keyword)
+    {
+        if (!is_null($keyword)) {
+            $spaceConvert = mb_convert_kana($keyword, 's');
+            $keywords = preg_split('/[\s]+/', $spaceConvert, -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($keywords as $word) {
+                $query->where('products.name', 'like', '%' . $word . '%');
+            }
+        } else {
+            return;
+        }
+    }
 }
