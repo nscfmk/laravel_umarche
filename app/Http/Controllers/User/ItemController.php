@@ -44,14 +44,13 @@ class ItemController extends Controller
 
        
        //非同期に送信
-        SendThanksMail::dispatch();
+        // SendThanksMail::dispatch();
         $categories = PrimaryCategory::with('secondary')->get();
         $products = Product::availableItems()
         ->selectCategory($request->category ?? '0')
         ->searchKeyword($request->keyword)
         ->sortOrder($request->sort)
         ->paginate($request->pagination ?? '20');
-
 
 
         return view('user.index', compact('products', 'categories'));
