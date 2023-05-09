@@ -54,3 +54,16 @@ storage/app/public/productsフォルダ内に保存すると表示される。
 ショップの画像も表示する場合は、
 storage/app/public/shopsフォルダを作成し
 画像を保存してください
+
+##section7の補足
+決済のテストとしてstripeを利用しています
+必要な場合は.envにstripeの情報を追記してください。
+（講座内で解説しています）
+
+##section8の補足
+メール処理には時間がかかるのでキューを使用しています。
+
+必要な場合は php artisan queue:work
+でワーカーを立ち上げて動作確認するようにしてください。
+
+##
