@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\User;
 
 use App\Models\Stock;
@@ -6,6 +7,13 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PrimaryCategory;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
+use App\Jobs\SendThanksMail;
+
+
+
 
 
 class ItemController extends Controller
@@ -15,40 +23,37 @@ class ItemController extends Controller
     {
         $this->middleware('auth:users');
 
-        
+        $this->middleware(function ($request, $next) {
+
+            $id = $request->route()->parameter('item');
+            if (!is_null($id)) {
+                $itemId = Product::availableItems()->where('products.id', $id)->exists();   //在庫が存在する商品で絞り込み→選択された商品で絞り込み→存在するor存在しないの判定
+                if (!$itemId) {
+                    abort(404);
+                }
+            }
+            return $next($request);
+        });
+
     }
    
-    public function index()
+    public function index(Request  $request)
     {
-        $stocks = DB::table('t_stocks')
-            ->select(
-                'product_id',
-                DB::raw('sum(quantity) as quantity')
-            )
-            ->groupBy('product_id')
-            ->having('quantity', '>', 1);
 
-        $products = DB::table('products')
-            ->joinSub($stocks, 'stock', function ($join) {
-                $join->on('products.id', '=', 'stock.product_id');
-            })
-            ->join('shops', 'products.shop_id', '=', 'shops.id')
-            ->join('secondary_categories', 'products.secondary_category_id', '=', 'secondary_categories.id')
-            ->join('images as image1', 'products.image1', '=', 'image1.id')
-            ->where('shops.is_selling', true)
-            ->where('products.is_selling', true)
-            ->select(
-                'products.id as id',
-                'products.name as name',
-                'products.price',
-                'products.sort_order as sort_order',
-                'products.information',
-                'secondary_categories.name as category',         //リレーションで取ってきていたものをクエリビルダ仕様に変更
-                'image1.filename as filename'
-            )
-            ->get();
+        // dd($request);
 
-        return view('user.index', compact('products'));
+       
+       //非同期に送信
+        // SendThanksMail::dispatch();
+        $categories = PrimaryCategory::with('secondary')->get();
+        $products = Product::availableItems()
+        ->selectCategory($request->category ?? '0')
+        ->searchKeyword($request->keyword)
+        ->sortOrder($request->sort)
+        ->paginate($request->pagination ?? '20');
+
+
+        return view('user.index', compact('products', 'categories'));
     }
 
     public function show($id){
@@ -60,4 +65,5 @@ class ItemController extends Controller
         }
         return view('user.show' , compact('product', 'quantity'));
     }
+
 }
